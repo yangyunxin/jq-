@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>放大镜效果</title>
+	<style>
+	* {margin: 0;padding: 0;}
+	.box {
+		position: relative;
+		width: 400px;
+		height: 400px;
+		margin: 50px;
+	}
+	.curImg {
+		width: 400px;
+		height: 400px;
+	}
+	.bigImg {
+		position: absolute;
+		top: 0px;
+		left: 400px;
+		height: 400px;
+		width: 400px;
+		background-color: red;
+		overflow: hidden;
+	}
+	.bigImg img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: hidden;
+	}
+	.mask {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 200px;
+		height: 200px;
+		background: rgba(255,255,255,.7);
+		display: none;
+	}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div class="curImg">
+			<img src="man.jpg" width="400" />
+			<div class="mask"></div>
+		</div>
+		<div class="bigImg">
+			<img src="man.jpg" width="800" />
+		</div>
+	</div>
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script>
+	$(function () {
+		$(".curImg").on("mousemove", function (e) {
+			var pageX = e.pageX - $(this).offset().left,
+				pageY = e.pageY- $(this).offset().top,
+				halfWidth = $(".mask").width()/2,
+				halfHeight = $(".mask").height()/2;
+
+			if (pageX < halfWidth) {
+				pageX = halfWidth;
+			}
+			if (pageX > ($(this).width() - halfWidth)) {
+				pageX = $(this).width() - halfWidth;
+			}
+			if (pageY < halfHeight) {
+				pageY = halfHeight;
+			}
+			if (pageY > ($(this).height() - halfHeight)) {
+				pageY = $(this).height() - halfHeight;
+			}
+			$('.mask').show().css({"left": pageX - halfWidth, "top": pageY - halfHeight});
+			$(".bigImg").show();
+			$(".bigImg img").css({"left": -2*(pageX - halfWidth), "top": -2*(pageY - halfHeight)});
+		});
+		$(".curImg").on("mouseout", function () {
+			$(".mask").hide();
+			$(".bigImg").hide();
+		})
+	});
+	
+	</script>
+</body>
+</html>
